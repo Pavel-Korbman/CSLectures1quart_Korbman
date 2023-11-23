@@ -150,7 +150,163 @@
 // FindWords("АИСВ", new char[4]);
 
 
+// // Вывести время создание папки (класс DirectoryInfo) и список файлов:
 
-// string path = "C:\Users\pavel\OneDrive\Рабочий стол\C#Lectures\CSLectures2\.gitignore";
-DirectoryInfo di = new DirectoryInfo(Users\pavel\OneDrive\Рабочий стол\C#Lectures\CSLectures2\.gitignore);
-Sistem.Console.WriteLine(di.CreationTime);
+// string path = "C:/Users/pavel/OneDrive/Рабочий стол/C#Lectures/CSLectures2";
+// DirectoryInfo di = new DirectoryInfo(path);
+// Console.WriteLine(di.CreationTime);
+// FileInfo[] fi = di.GetFiles(); // Список в виде массива
+
+// for (int i = 0; i < fi.Length; i++)
+// {
+//     Console.WriteLine(fi[i].Name);
+// }
+
+
+// // Обзор папок и вывод файлов с рекурсией:
+
+// void CatalogInfo(string path, string indent = "")
+// {
+//     DirectoryInfo catalog = new DirectoryInfo(path);
+//     DirectoryInfo[] catalogs = catalog.GetDirectories();
+//     for (int i = 0; i < catalogs.Length; i++)
+//     {
+//         Console.WriteLine($"{indent}{catalogs[i].Name}");
+//         CatalogInfo(catalogs[i].FullName, indent + " ");
+//     }
+//     FileInfo[] files = catalog.GetFiles();
+
+//     for (int i = 0; i < files.Length; i++)
+//     {
+//         Console.WriteLine($"{indent}{files[i].Name}");
+//     }
+
+// }
+
+// string path = "C:/Users/pavel/OneDrive/Рабочий стол/C#Lectures/CSLectures3";
+// CatalogInfo(path);
+
+
+// // ДЕЛАЕМ ИГРЫ С ПОМОЩЬЮ РЕКУРСИИ
+// // Перекладывание блинов по штырям (пирамидки)
+
+
+// void Towers(string with="1", string on="3", string some="2", int count=3)
+// {
+//     if (count>1) Towers(with, some, on, count - 1);
+//     Console.WriteLine($"{with}>>{on}");
+//     if (count>1) Towers(some, on, with, count - 1);
+// }
+
+// Towers();
+
+
+// // РЕШЕНИЕ БОЛЕЕ СЛОЖНЫХ ЗАДАЧ
+// // Обход разных структур
+// // ((4 -  2)  * (1 +   3)) / 10
+// // Выражение можно разбить на действия и пронумеровать их последовательность:
+// //                   (/)1
+// //                  /    \
+// //                 /     (10)3
+// //               (*)2
+// //             /      \
+// //            /        \
+// //          (-)4        (+)5
+// //         /  \         /  \ 
+// //       (4)8  (2)9   (1)10 (3)11
+
+// //  Верхние действия - родительские для нижних
+
+// //          (a[i]) 
+// //          /    \
+// //     (a[2i])  (a[2i+1]) 
+
+// //Программа выводит порядок действий :
+
+// string emp = String.Empty;
+// string[] tree = { emp, "/", "*", "10", "-", "+", emp, emp, "4", "2", "1", "3" }; 
+// // emp - чтобы умещалось в одну строку
+// void InOrderTraversal(int pos=1)
+// {
+//     if (pos<tree.Length)
+//     {
+//         int left = 2*pos;
+//         int right = 2* pos + 1;
+//         if(left<tree.Length && !String.IsNullOrEmpty(tree[left])) InOrderTraversal(left);
+//         Console.WriteLine(tree[pos]);
+//         if(right<tree.Length && !String.IsNullOrEmpty(tree[right])) InOrderTraversal(right);
+//     }
+// }
+// InOrderTraversal();
+
+// // НЕДОСТАТКИ РЕКУРСИИ
+// // Бывает медленной
+// // Ряд Фибоначи с рекурсией и без:
+
+// decimal fRec = 0;
+// decimal fIte = 0;
+// // С рекурсией:
+// decimal FibonacciRecursion(int n)
+// {
+//     fRec++;
+//     return n==0 || n==1 ? 1 : FibonacciRecursion(n-1) + FibonacciRecursion(n-2);
+// }
+
+// // Без рекурси:
+// decimal FibonacciIteration(int n)
+// {
+//     fIte++;
+//     decimal result = 1;
+//     decimal f0 = 1;
+//     decimal f1 = 1;
+//     for (int i = 2; i <= n; i++)
+//     {
+//      result=f0+f1;
+//      f0=f1;
+//      f1=result;
+//      fIte++;   
+//     }
+//     return result;
+// }
+// Console.ReadLine();
+
+// DateTime dt = DateTime.Now;
+// for (int n = 10; n < 40; n++)
+// {
+//     Console.WriteLine($"FibonacciIteration({n})= {FibonacciIteration(n)} fIte = {fIte.ToString("### ### ###"), -15}");
+//     fIte=0;
+// }
+// Console.WriteLine((DateTime.Now - dt).TotalMilliseconds);
+
+// Console.WriteLine();
+// Console.ReadLine();
+// dt = DateTime.Now;
+// for (int n = 10; n < 40; n++)
+// {
+//     Console.WriteLine($"FibonacciRecursion({n})= {FibonacciRecursion(n)} fRec = {fRec.ToString("### ### ###"), -15}");
+//     fRec=0;
+// }
+// Console.WriteLine((DateTime.Now - dt).TotalMilliseconds);
+
+
+// // НЕДОСТАТКИ РЕКУРСИИ
+// // Ошибки. Самая частая - переполнение стека! (памяти и количества обращений)
+// // ЕСЛИ НЕ ПРОПИСАЛИ или НЕ ПРАВИЛЬНО ПРОПИСАЛИ УСЛОВИЕ ВЫХОДА ИЗ РЕКУРСИИ:
+// // ИЛИ ПРОГРАММА (как в закрашивании картинок) ДЕЛАЕТ СЛИШКОМ МНОГО ОБРАЩЕНИЙ! 
+
+// void Rec() // Метод, ничего не делает, только вызывает сам себя без выхода
+// {
+//     Rec(); 
+// }
+
+// Rec();
+
+// //То же самое с просмотром в чисел консоль:
+// int i=0;
+// void Rec()
+// {
+//     Console.WriteLine(i++);
+//     Rec(); 
+// }
+
+// Rec();
