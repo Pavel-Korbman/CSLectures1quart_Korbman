@@ -1,2 +1,2 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿// Переходим в Visual Studio 
+// https://visualstudio.microsoft.com/ru/vs/community/
